@@ -1,6 +1,6 @@
 import pygame
 import random
-
+import time
 #Define colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -40,6 +40,7 @@ class Paddle:
             self.x -= 10
         elif direction == "right" and self.x < WIDTH - self.width:
             self.x += 10
+            
 
 class Game:
     def __init__(self):
@@ -48,6 +49,20 @@ class Game:
         self.score = 0
         self.font = pygame.font.Font(None, 36)
         self.game_over = False
+
+        self.countdown_time = 3  # Set the countdown time in seconds
+    def countdown(self, screen):
+        for i in range(self.countdown_time, 0, -1):
+            screen.fill(BLACK)
+            countdown_text = self.font.render(str(i), True, WHITE)
+            countdown_rect = countdown_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+            screen.blit( countdown_text, countdown_rect)
+            pygame.display.flip()
+            time.sleep(1)
+            
+
+
+    
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -85,6 +100,8 @@ def main():
     pygame.display.set_caption("Ping Pong")
     clock = pygame.time.Clock()
     game = Game()
+
+    game.countdown(screen)
 
     while not game.game_over:
         game.handle_events()
